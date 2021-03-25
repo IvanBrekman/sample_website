@@ -237,5 +237,35 @@ def planet_info(planet_name):
         </html>"""
 
 
+@app.route('/results/<string:nickname>/<int:level>/<float:rating>')
+def results_page(nickname: str, level: int, rating: float):
+    data = [f'Поздравляем! Ваш рейтинг после {level} этапа отбора', f'составляет {rating}!',
+            'Желаем удачи!']
+    rd.shuffle(alerts)
+
+    return f"""
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <meta charset="UTF-8">
+                <title>Результаты отбора</title>
+                <link rel="stylesheet"
+                      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+                      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+                      crossorigin="anonymous">
+            </head>
+
+            <body>
+                <h1>Результаты отбора</h1>
+                <h2>Претендента на участие в миссии <font color="red">{nickname}</font></h2>
+                <br><br><br>
+                {''.join([f'<div class="alert alert-{alert}" role="alert">{text}</div>'
+                          for text, alert in zip(data, alerts)])}
+            </body>
+
+            </html>"""
+
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000)
