@@ -1,0 +1,43 @@
+body {
+    background-image: url("../img/mars.jpg");
+}
+
+h1, h2 {
+    color: greenyellow;
+    text-align: center;
+}
+
+form.selection-form {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    max-width: 450px;
+    background-color: darkcyan;
+    border: 1px solid dimgray;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#surname, #name {
+    margin-top: 1px;
+}
+
+input.form-control, select.form-control, input {
+    margin-top: 10px;
+}
+
+#ready, #ready_label {
+    margin-top: 30px;
+    font-size: 18px;
+}
+
+label.title {
+    margin-top: 20px;
+    font-size: 18px;
+    color: gold;
+}
+
+label.selected {
+    font-size: 18px;
+    color: darkorange;
+}
