@@ -9,6 +9,7 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
           crossorigin="anonymous">
     <link rel="stylesheet" href="static/css/style.css" type="text/css" >
+    <script src="static/js/script.js"></script>
 </head>
 
 <body>
@@ -70,7 +71,8 @@
             <textarea class="form-control" id="motivation" name="motivation" rows="3" ></textarea>
 
             <label class="title" for="photo">Выберите вашу фотографию</label>
-            <p><input type="file" class="" id="photo" name="photo" accept="image/*" size="10px" required></p>
+            <p><input type="file" class="" id="photo" name="photo" accept="image/*" size="10px" onChange="showFile(event)" required></p>
+            <p><img src="" alt="Выбранная картинка" id="photo_img" /></p>
 
             <input type="checkbox" class="form-check-input" id="ready" required>
             <label class="form-check-label" for="ready" id="ready_label">Я готов ко всем трудностям экспедиции</label>

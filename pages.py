@@ -1,3 +1,4 @@
+import os
 import random as rd
 
 from flask import Flask, url_for, request, redirect
@@ -90,18 +91,19 @@ def form():
                           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
                           crossorigin="anonymous">
                     <link rel="stylesheet" href="{url_for('static', filename='css/style.css')}" type="text/css" >
+                    <script src="{url_for('static', filename='js/script.js')}"></script>
                 </head>
 
                 <body>
                     <h1>Анкета претендента</h1>
                     <h2>на участие в миссии</h2>
-
+                
                     <div>
                         <form class="selection-form" method="post" enctype="multipart/form-data">
                             <input class="form-control" type="text" id="surname" name="surname" placeholder="Введите Фамилию" required />
                             <input class="form-control" type="text" id="name" name="name" placeholder="Введите Имя" required />
                             <input class="form-control" type="email" id="email" name="email" placeholder="Введите адрес электронной почты" required />
-
+                
                             <div class="form-group">
                                 <label class="title" for="education">Какое у вас образование?</label>
                                 <select class="form-control" id="education" name="education">
@@ -136,7 +138,7 @@ def form():
                             </div>
                             <div id="sex" class="form-group">
                                 <label class="title" for="sex">Укажите пол</label>
-
+                
                                 <div class="form-check">
                                     <input type="radio" id="male" name="male" checked>
                                     <label class="selected" for="male">Мужской</label>
@@ -146,16 +148,17 @@ def form():
                                     <label class="selected" for="female">Женский</label>
                                 </div>
                             </div>
-
+                
                             <label class="title" for="motivation">Почему именно Вы должны принять участие в экспедиции на Марс?</label>
                             <textarea class="form-control" id="motivation" name="motivation" rows="3" ></textarea>
-
+                
                             <label class="title" for="photo">Выберите вашу фотографию</label>
-                            <p><input type="file" class="" id="photo" name="photo" accept="image/*" size="10px" required></p>
-
+                            <p><input type="file" class="" id="photo" name="photo" accept="image/*" size="10px" onchange="showFile(event)" required></p>
+                            <p><img src="" alt="Выбранная картинка" id="photo_img" /></p>
+                
                             <input type="checkbox" class="form-check-input" id="ready" required>
                             <label class="form-check-label" for="ready" id="ready_label">Я готов ко всем трудностям экспедиции</label>
-
+                
                             <input type="submit" class="btn btn-primary" />
                         </form>
                     </div>
@@ -166,13 +169,27 @@ def form():
         data = request.form
         print(data)
 
-        fullname = request.form['surname'] + ' ' + request.form['name']
-        email = request.form['email']
+        fullname = data['surname'] + ' ' + data['name']
+        email = data['email']
+
+        if not os.path.exists('static/candidates_photo'):
+            os.mkdir('static/candidates_photo')
+        request.files['photo'].save(f'static/candidates_photo/{fullname}.jpg')
+
+        img_style = "img { max-width: 400px; }"
 
         return f"""
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Отбор астронавтов</title>
+                    <style>{img_style}</style>
+                </head>
+                
                 <h2>Здравствуйте, {fullname}!</h2>
                 <h3>Мы получили вашу форму и в скором времени обязательно ее рассмотрим</h3>
                 <h3>Ожидайте письма от нас на указанную почту: {email}</h3>
+                <h3>P.S. Вы очень красивы :)</h3>
+                <img src="{url_for('static', filename=f'candidates_photo/{fullname}.jpg')}" alt="Здесь должна быть ваша фотография, но почему то она не загрузилась :("/>
                 """
 
 
@@ -268,4 +285,4 @@ def results_page(nickname: str, level: int, rating: float):
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8000)
+    app.run(host='127.0.0.1', port=8080)
